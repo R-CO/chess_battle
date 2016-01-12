@@ -2,18 +2,16 @@
 *** Author: R-CO
 *** Mail: daniel1820kobe@gmail.com
 *** Date: 2016-01-08
-***/
+**/
 #include "main.h"
 
-#include <wx/wx.h>
-
-// Include main_frame.h here
+#include "gui/chess_battle_main_frame.h"
 
 IMPLEMENT_APP(ChessBattleApp)
 
 bool ChessBattleApp::OnInit()
 {
-  wxFrame *main_frame = new wxFrame(NULL, wxID_ANY, wxT("hello world!"));
+  ChessBattleMainFrame *chess_battle_main_frame = new ChessBattleMainFrame(NULL);
 
-  return main_frame->Show();
+  return chess_battle_main_frame->Show();
 }
