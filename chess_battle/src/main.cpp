@@ -11,7 +11,7 @@ IMPLEMENT_APP(ChessBattleApp)
 
 bool ChessBattleApp::OnInit()
 {
-  ChessBattleMainFrame *chess_battle_main_frame = new ChessBattleMainFrame(NULL);
+  ChessBattleMainFrame *chess_battle_main_frame = new ChessBattleMainFrame(nullptr);
 
   return chess_battle_main_frame->Show();
 }

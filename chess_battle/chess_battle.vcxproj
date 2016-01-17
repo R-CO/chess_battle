@@ -26,6 +26,7 @@
     <ClInclude Include="src\main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\chess.cpp" />
     <ClCompile Include="src\gui\chess_battle_main_frame.cpp" />
     <ClCompile Include="src\gui\main_frame_base.cpp" />
     <ClCompile Include="src\main.cpp" />

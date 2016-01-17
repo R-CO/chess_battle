@@ -1,3 +1,8 @@
+/**
+*** Author: R-CO
+*** Mail: daniel1820kobe@gmail.com
+*** Date: 2016-01-08
+**/
 #include "chess_battle_main_frame.h"
 
 #include <wx/msgdlg.h>
@@ -9,8 +14,8 @@ const wxBrush   ChessBattleMainFrame::kChessBoardBackgroundBrush_ = wxBrush(wxCo
 
 const wxColour  ChessBattleMainFrame::kChessBoardTextForegroundColour_ = wxColour(0, 0, 200);
 
-const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("觀棋不語真君子");
-const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("起手無回大丈夫");
+const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("起手無回大丈夫");
+const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("觀棋不語真君子");
 
 const wxFont    ChessBattleMainFrame::kLeftRightChessBoardTextFont_ = wxFont(32, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("標楷體"));
 
@@ -59,7 +64,7 @@ void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
   // TODO: Implement OnPaintChessBoardPanel
   wxBufferedPaintDC dc(chess_board_panel_);
   Render(dc);
-  PaintNow();
+  //PaintNow();
 }
 
 void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
@@ -168,11 +173,11 @@ void ChessBattleMainFrame::DrawText(wxDC & dc)
 
   dc.SetFont(kLeftRightChessBoardTextFont_);
   dc.SetTextForeground(kChessBoardTextForegroundColour_);
-  for (i = 0; i < kLeftChessBoardString_.size(); ++i) {
-    dc.DrawText(kLeftChessBoardString_[i], 355, (50 + gap * i));
-  }
   for (i = 0; i < kRightChessBoardString_.size(); ++i) {
-    dc.DrawText(kRightChessBoardString_[i], 5, 50 + gap*i);
+    dc.DrawText(kRightChessBoardString_[i], 355, (50 + gap * i));
+  }
+  for (i = 0; i < kLeftChessBoardString_.size(); ++i) {
+    dc.DrawText(kLeftChessBoardString_[i], 5, 50 + gap*i);
   }
 
   dc.SetFont(old_font);
@@ -201,6 +206,8 @@ void ChessBattleMainFrame::DrawDetail(wxDC & dc, const wxPoint & center, const b
 
 void ChessBattleMainFrame::InitGui(void)
 {
+  chess_board_panel_->SetBackgroundStyle(wxBG_STYLE_PAINT);
+
   wxIPV4address remote;
   remote.Hostname(wxT("www.google.com.tw"));
   remote.Service(80);

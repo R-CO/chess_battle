@@ -47,5 +47,8 @@
     <ClCompile Include="src\gui\main_frame_base.cpp">
       <Filter>原始程式檔\gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\chess.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

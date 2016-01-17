@@ -6,30 +6,34 @@
 #ifndef CHESS_BATTLE_CHESSBOARD_H
 #define CHESS_BATTLE_CHESSBOARD_H
 
-#include <cstdlib> 
+#include <wx/msgdlg.h>
 
 #include "chess.h"
 
 class ChessboardGrid
 {
 public:
-  ChessboardGrid() {
-    chess_ = NULL;
-    is_chess_on_ = false;
+  ChessboardGrid() 
+    : chess_(nullptr), is_chess_on_(false)
+  {
+    kBlackChessNameVector.size();
   }
 
   ChessboardGrid(Chess *chess)
-    : chess_(chess)
+    : chess_(chess), is_chess_on_(true)
   {
-    is_chess_on_ = true;
   }
 
   ~ChessboardGrid() {
-    chess_ = NULL;
+    chess_ = nullptr;
   }
 
   inline const bool is_chess_on(void) {
     return is_chess_on_;
+  }
+
+  inline void set_chess(Chess *chess) {
+    chess_ = chess;
   }
 
 private:
