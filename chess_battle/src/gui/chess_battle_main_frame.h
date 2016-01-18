@@ -58,8 +58,8 @@ public:
 protected:
   static const wxBrush        kChessBoardBackgroundBrush_;
   static const wxColour       kChessBoardTextForegroundColour_;
-  static const wxString       kLeftChessBoardString_; // wxT("Æ[´Ñ¤£»y¯u§g¤l");
-  static const wxString       kRightChessBoardString_; //  wxT("Æ[´Ñ¤£»y¯u§g¤l");
+  static const wxString       kLeftChessBoardString_; // wxT("è§€æ£‹ä¸èªçœŸå›å­");
+  static const wxString       kRightChessBoardString_; //  wxT("è§€æ£‹ä¸èªçœŸå›å­");
   static const wxFont         kLeftRightChessBoardTextFont_;
 
   Chessboard chess_board_;

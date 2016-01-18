@@ -14,10 +14,10 @@ const wxBrush   ChessBattleMainFrame::kChessBoardBackgroundBrush_ = wxBrush(wxCo
 
 const wxColour  ChessBattleMainFrame::kChessBoardTextForegroundColour_ = wxColour(0, 0, 200);
 
-const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("°_¤âµL¦^¤j¤V¤Ò");
-const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("Æ[´Ñ¤£»y¯u§g¤l");
+const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("èµ·æ‰‹ç„¡å›å¤§ä¸ˆå¤«");
+const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("è§€æ£‹ä¸èªçœŸå›å­");
 
-const wxFont    ChessBattleMainFrame::kLeftRightChessBoardTextFont_ = wxFont(32, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("¼Ğ·¢Åé"));
+const wxFont    ChessBattleMainFrame::kLeftRightChessBoardTextFont_ = wxFont(32, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("æ¨™æ¥·é«”"));
 
 ChessBattleMainFrame::ChessBattleMainFrame(wxWindow* parent)
   :

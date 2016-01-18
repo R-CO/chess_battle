@@ -8,43 +8,43 @@
 #include <map>
 #include <vector>
 
-const std::vector<wxString> kBlackChessNameVector = {wxT("®Ú"), wxT("•]"), wxT("∞®"), wxT("®Æ"), wxT("∂H"), wxT("§h"), wxT("±N")};
-const std::vector<wxString> kRedChessNameVector = {wxT("ßL"), wxT("¨∂"), wxT("ÿX"), wxT("?"), wxT("¨€"), wxT("•K"), wxT("´”")};
+const std::vector<wxString> kBlackChessNameVector = {wxT("Âçí"), wxT("ÂåÖ"), wxT("È¶¨"), wxT("Ëªä"), wxT("Ë±°"), wxT("Â£´"), wxT("Â∞á")};
+const std::vector<wxString> kRedChessNameVector = {wxT("ÂÖµ"), wxT("ÁÇÆ"), wxT("ÂÇå"), wxT("‰ø•"), wxT("Áõ∏"), wxT("‰ªï"), wxT("Â∏•")};
 
 std::map<wxString, ChessColor> Chess::kChessNameColorMap = 
 { 
-  std::pair<wxString, ChessColor>(wxT("®Ú"), kBlackChess),
-  std::pair<wxString, ChessColor>(wxT("•]"), kBlackChess),
-  std::pair<wxString, ChessColor>(wxT("∞®"), kBlackChess),
-  std::pair<wxString, ChessColor>(wxT("®Æ"), kBlackChess), 
-  std::pair<wxString, ChessColor>(wxT("∂H"), kBlackChess), 
-  std::pair<wxString, ChessColor>(wxT("§h"), kBlackChess), 
-  std::pair<wxString, ChessColor>(wxT("±N"), kBlackChess),
-  std::pair<wxString, ChessColor>(wxT("ßL"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("¨∂"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("ÿX"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("?"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("¨€"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("•K"), kRedChess),
-  std::pair<wxString, ChessColor>(wxT("´”"), kRedChess)
+  std::pair<wxString, ChessColor>(wxT("Âçí"), kBlackChess),
+  std::pair<wxString, ChessColor>(wxT("ÂåÖ"), kBlackChess),
+  std::pair<wxString, ChessColor>(wxT("È¶¨"), kBlackChess),
+  std::pair<wxString, ChessColor>(wxT("Ëªä"), kBlackChess), 
+  std::pair<wxString, ChessColor>(wxT("Ë±°"), kBlackChess), 
+  std::pair<wxString, ChessColor>(wxT("Â£´"), kBlackChess), 
+  std::pair<wxString, ChessColor>(wxT("Â∞á"), kBlackChess),
+  std::pair<wxString, ChessColor>(wxT("ÂÖµ"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("ÁÇÆ"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("ÂÇå"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("‰ø•"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("Áõ∏"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("‰ªï"), kRedChess),
+  std::pair<wxString, ChessColor>(wxT("Â∏•"), kRedChess)
 };
 
 std::map<wxString, ChessType> Chess::kChessNameTypeMap = 
 {
-  std::pair<wxString, ChessType>(wxT("®Ú"), 0),
-  std::pair<wxString, ChessType>(wxT("•]"), 1),
-  std::pair<wxString, ChessType>(wxT("∞®"), 2),
-  std::pair<wxString, ChessType>(wxT("®Æ"), 3),
-  std::pair<wxString, ChessType>(wxT("∂H"), 4),
-  std::pair<wxString, ChessType>(wxT("§h"), 5),
-  std::pair<wxString, ChessType>(wxT("±N"), 6),
-  std::pair<wxString, ChessType>(wxT("ßL"), 0),
-  std::pair<wxString, ChessType>(wxT("¨∂"), 1),
-  std::pair<wxString, ChessType>(wxT("ÿX"), 2),
-  std::pair<wxString, ChessType>(wxT("?"), 3),
-  std::pair<wxString, ChessType>(wxT("¨€"), 4),
-  std::pair<wxString, ChessType>(wxT("•K"), 5),
-  std::pair<wxString, ChessType>(wxT("´”"), 6)
+  std::pair<wxString, ChessType>(wxT("Âçí"), 0),
+  std::pair<wxString, ChessType>(wxT("ÂåÖ"), 1),
+  std::pair<wxString, ChessType>(wxT("È¶¨"), 2),
+  std::pair<wxString, ChessType>(wxT("Ëªä"), 3),
+  std::pair<wxString, ChessType>(wxT("Ë±°"), 4),
+  std::pair<wxString, ChessType>(wxT("Â£´"), 5),
+  std::pair<wxString, ChessType>(wxT("Â∞á"), 6),
+  std::pair<wxString, ChessType>(wxT("ÂÖµ"), 0),
+  std::pair<wxString, ChessType>(wxT("ÁÇÆ"), 1),
+  std::pair<wxString, ChessType>(wxT("ÂÇå"), 2),
+  std::pair<wxString, ChessType>(wxT("‰ø•"), 3),
+  std::pair<wxString, ChessType>(wxT("Áõ∏"), 4),
+  std::pair<wxString, ChessType>(wxT("‰ªï"), 5),
+  std::pair<wxString, ChessType>(wxT("Â∏•"), 6)
 };
 
 void Chess::ResetChess(void)
