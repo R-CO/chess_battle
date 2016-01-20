@@ -9,10 +9,19 @@
 #include <map>
 #include <vector>
 
+#include <wx/gdicmn.h>
 #include <wx/string.h>
-#include <wx/arrstr.h>
 
-typedef int ChessType;
+enum ChessType
+{
+  kChessSoldier  = 0,
+  kChessCannon   = 1,
+  kChessHorse    = 2,
+  kChessCar      = 3,
+  kChessElephant = 4,
+  kChessWarrior  = 5,
+  kChessGeneral  = 6
+};
 
 enum ChessColor
 {
@@ -28,10 +37,10 @@ enum ChessStatus
 };
 
 // wxT("卒") /* 0 */, wxT("包") /* 1 */, wxT("馬") /* 2 */, wxT("車") /* 3 */,	wxT("象") /* 4 */, wxT("士") /* 5 */, wxT("將") /* 6 */
-extern const std::vector<wxString> kBlackChessNameVector; // Definition is in "chess.cpp"
+extern const std::vector<wxString> kBlackChessNames; // Definition is in "chess.cpp"
 
 // wxT("兵") /* 0 */, wxT("炮") /* 1 */, wxT("傌") /* 2 */, wxT("俥") /* 3 */, wxT("相") /* 4 */, wxT("仕") /* 5 */, wxT("帥") /* 6 */
-extern const std::vector<wxString> kRedChessNameVector; // Definition is in "chess.cpp"
+extern const std::vector<wxString> kRedChessNames; // Definition is in "chess.cpp"
 
 class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
 
@@ -48,12 +57,16 @@ public:
 
   // Get functions
 
+  inline const wxPoint get_position(void) {
+    return chess_position_;
+  }
+
   inline const int get_x_coordinate(void) {
-    return x_coordinate_;
+    return chess_position_.x;
   }
 
   inline const int get_y_coordinate(void) {
-    return y_coordinate_;
+    return chess_position_.y;
   }
 
   inline const ChessColor get_chess_color(void) {
@@ -72,18 +85,26 @@ public:
     return chess_type_;
   }
 
+  inline const bool get_taking(void) {
+    return taking_;
+  }
+
   inline static const ChessType get_chess_type(const wxString &chess_name) {
     return kChessNameTypeMap[chess_name];
   }
 
   // Set functions
 
+  inline void set_position(const wxPoint &position) {
+    chess_position_ = position;
+  }
+
   inline void set_x_coordinate(const int &x_coordinate) {
-    x_coordinate_ = x_coordinate;
+    chess_position_.x = x_coordinate;
   }
 
   inline void set_y_coordinate(const int &y_coordinate) {
-    y_coordinate_ = y_coordinate;
+    chess_position_.y = y_coordinate;
   }
 
   inline void set_chess_color(const ChessColor &chess_color) {
@@ -94,6 +115,10 @@ public:
     chess_status_ = chess_status;
   }
 
+  inline void set_taking(const bool &taking) {
+    taking_ = taking;
+  }
+
 protected:
   virtual void InitChess(void);
 
@@ -102,10 +127,11 @@ private:
   ChessColor chess_color_;
   ChessStatus chess_status_;
   wxString chess_name_;
-  int x_coordinate_;
-  int y_coordinate_;
-  int chess_type_;
+  wxPoint chess_position_;
+  ChessType chess_type_;
   int chess_exp_;
+
+  bool taking_;
 
   static std::map<wxString, ChessColor> kChessNameColorMap;
   static std::map<wxString, ChessType> kChessNameTypeMap;

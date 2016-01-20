@@ -36,6 +36,9 @@
     <ClInclude Include="src\chessboard.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="src\chess_game.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -48,6 +51,12 @@
       <Filter>原始程式檔\gui</Filter>
     </ClCompile>
     <ClCompile Include="src\chess.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="src\chess_game.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="src\chessboard.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>

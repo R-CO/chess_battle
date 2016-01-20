@@ -14,7 +14,7 @@ const wxBrush   ChessBattleMainFrame::kChessBoardBackgroundBrush_ = wxBrush(wxCo
 
 const wxColour  ChessBattleMainFrame::kChessBoardTextForegroundColour_ = wxColour(0, 0, 200);
 
-const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("起手無回大丈夫");
+const wxString  ChessBattleMainFrame::kLeftChessBoardString_  = wxT("起手無回大丈夫");
 const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("觀棋不語真君子");
 
 const wxFont    ChessBattleMainFrame::kLeftRightChessBoardTextFont_ = wxFont(32, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("標楷體"));
@@ -131,7 +131,8 @@ void ChessBattleMainFrame::DrawLines(wxDC & dc)
   wxPen old_pen = dc.GetPen();
   dc.SetPen(*wxBLACK_PEN);
 
-  wxPoint p1(50, 10), p2(50, 610);
+  wxPoint p1(50, 10);
+  wxPoint p2(50, 610);
   const int gap(75);
   int i(0);
 

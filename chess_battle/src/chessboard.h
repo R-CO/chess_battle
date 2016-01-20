@@ -16,7 +16,6 @@ public:
   ChessboardGrid() 
     : chess_(nullptr), is_chess_on_(false)
   {
-    kBlackChessNameVector.size();
   }
 
   ChessboardGrid(Chess *chess)
@@ -41,15 +40,23 @@ private:
   bool is_chess_on_;
 };
 
-const int kChessBoardRow = 8;
-const int kChessBoardColumn = 4;
+const int kChessboardRow = 8;
+const int kChessboardColumn = 4;
 
 class Chessboard
 {
 public:
+  Chessboard();
+
+  ~Chessboard();
+
+  // get functions
+
+  // set functions
+  const bool SetChessOnGrid(Chess *chess, const int &chessboard_row, const int &chessboard_column);
 
 private:
-  ChessboardGrid chessboard_grids_[kChessBoardRow][kChessBoardColumn];
+  ChessboardGrid chessboard_grids_[kChessboardRow][kChessboardColumn];
 };
 
 #endif
