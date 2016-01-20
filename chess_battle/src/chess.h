@@ -27,7 +27,10 @@ enum ChessStatus
   kChessIsDead = 2
 };
 
+// wxT("卒") /* 0 */, wxT("包") /* 1 */, wxT("馬") /* 2 */, wxT("車") /* 3 */,	wxT("象") /* 4 */, wxT("士") /* 5 */, wxT("將") /* 6 */
 extern const std::vector<wxString> kBlackChessNameVector; // Definition is in "chess.cpp"
+
+// wxT("兵") /* 0 */, wxT("炮") /* 1 */, wxT("傌") /* 2 */, wxT("俥") /* 3 */, wxT("相") /* 4 */, wxT("仕") /* 5 */, wxT("帥") /* 6 */
 extern const std::vector<wxString> kRedChessNameVector; // Definition is in "chess.cpp"
 
 class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
