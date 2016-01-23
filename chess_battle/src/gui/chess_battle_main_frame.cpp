@@ -97,12 +97,20 @@ void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
   // TODO: Implement OnPaintChessBoardPanel
   wxBufferedPaintDC dc(chess_board_panel_);
   Render(dc);
-  //PaintNow();
+  PaintNow();
 }
 
 void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
 {
   // TODO: Implement OnButtonClickNewGame
+  chess_game_.set_game_status(kChessGameStart);
+  chess_game_.set_game_sytle(static_cast<ChessGameStyle>(main_frame_base::play_style_radio_box_->GetSelection()));
+  chess_game_.set_game_mode(static_cast<ChessGameMode>(main_frame_base::play_mode_radio_box_->GetSelection()));
+
+  chess_game_.Reset();
+  chess_game_.PlaceChesses(kLeftTopGridCenterPos_, kChessGridWidth_);
+
+  PaintNow();
 }
 
 void ChessBattleMainFrame::OnRadioBoxPlayModeRadioBox(wxCommandEvent& event)

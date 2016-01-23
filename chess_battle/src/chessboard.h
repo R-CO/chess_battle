@@ -33,7 +33,7 @@ public:
     return is_chess_on_;
   }
 
-  void set_chess(Chess *chess);
+  void SetChess(Chess *chess);
 
 private:
   Chess *chess_;
@@ -49,6 +49,8 @@ public:
   Chessboard();
 
   ~Chessboard();
+
+  void ResetChessboardGrids(void);
 
   inline const bool is_chess_on_grid(const int &row, const int &column) const {
     return chessboard_grids_[row][column].is_chess_on();

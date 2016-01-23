@@ -23,12 +23,26 @@ namespace rco {
     kChessGameStart = 1,
   };
 
+  enum ChessGameStyle
+  {
+    kChessGameStyleTraditional = 0,
+    kChessGameStyleNew = 1,
+  };
+
+  enum ChessGameMode
+  {
+    kChessGameModeOnePc = 0,
+    kChessGameModeConnection = 1,
+  };
+
   class ChessGame
   {
   public:
     ChessGame();
 
     void PlaceChesses(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
+
+    void Reset();
 
     // get function
 
@@ -50,13 +64,26 @@ namespace rco {
       game_status_ = game_status;
     }
 
+    inline void set_game_sytle(const ChessGameStyle &game_style) {
+      game_style_ = game_style;
+    }
+
+    inline void set_game_mode(const ChessGameMode &game_mode) {
+      game_mode_ = game_mode;
+    }
+
   protected:
     virtual void GetRandomPosition(int &row, int &column, const time_t &seed = time(nullptr)) const;
+    
+    void ResetChesses(void);
+    void ResetChessboardGrids(void);
 
   private:
     Chessboard chess_board_;
     std::vector<Chess> chesses_;
     ChessGameStatus game_status_;
+    ChessGameStyle game_style_;
+    ChessGameMode game_mode_;
   };
 
 }

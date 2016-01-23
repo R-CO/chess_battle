@@ -40,6 +40,8 @@ ChessGame::ChessGame()
   };
 
   game_status_ = kChessGameNotStart;
+  game_style_ = kChessGameStyleTraditional;
+  game_mode_ = kChessGameModeOnePc;
 }
 
 void ChessGame::PlaceChesses(const wxPoint &left_top_grid_center_pos, const int &grid_width)
@@ -55,6 +57,24 @@ void ChessGame::PlaceChesses(const wxPoint &left_top_grid_center_pos, const int 
     wxPoint chess_center = left_top_grid_center_pos + wxPoint((column * grid_width), (row * grid_width));
     chess_ptr->set_position(chess_center);
   }
+}
+
+void ChessGame::Reset()
+{
+  ResetChesses();
+  ResetChessboardGrids();
+}
+
+void ChessGame::ResetChesses(void)
+{
+  for (size_t chess_index = 0; chess_index < chesses_.size(); ++chess_index) {
+    chesses_[chess_index].ResetChess();
+  }
+}
+
+void ChessGame::ResetChessboardGrids(void)
+{
+  chess_board_.ResetChessboardGrids();
 }
 
 Chess * ChessGame::get_chess(const int &chess_number)
