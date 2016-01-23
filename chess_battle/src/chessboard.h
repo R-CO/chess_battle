@@ -7,6 +7,7 @@
 #define CHESS_BATTLE_CHESSBOARD_H
 
 #include <wx/msgdlg.h>
+#include <wx/gdicmn.h>
 
 #include "chess.h"
 
@@ -33,11 +34,39 @@ public:
     return is_chess_on_;
   }
 
+  // Get functions
+
+  inline static const int get_grid_width(void) {
+    return grid_width_;
+  }
+
+  inline static const wxPoint get_left_top_grid_center_pos(void) {
+    return left_top_grid_center_pos_;
+  }
+
+  const wxPoint *GetGridCenterPosition(void) const;
+
+  // Set functions
+
   void SetChess(Chess *chess);
+
+  inline void set_grid_center_position(const wxPoint &grid_center_position) {
+    grid_center_position_ = grid_center_position;
+  }
+
+  // grid_width must > 0
+  inline static void set_grid_basic_attributes(const wxPoint &left_top_grid_center_pos, const int &grid_width) { 
+    left_top_grid_center_pos_ = left_top_grid_center_pos;
+    grid_width_ = grid_width;
+  }
 
 private:
   Chess *chess_;
   bool is_chess_on_;
+  wxPoint grid_center_position_;
+  
+  static wxPoint left_top_grid_center_pos_;
+  static int grid_width_;
 };
 
 const int kChessboardRow = 8;
@@ -46,7 +75,7 @@ const int kChessboardColumn = 4;
 class Chessboard
 {
 public:
-  Chessboard();
+  Chessboard(const wxPoint &left_top_grid_center_pos, const int &grid_width);
 
   ~Chessboard();
 
@@ -57,9 +86,18 @@ public:
   }
 
   // get functions
+  const wxPoint *GetGridCenterPosition(const int &row, const int &column) const;
+
+  static const int get_grid_width(void) {
+    return ChessboardGrid::get_grid_width();
+  }
 
   // set functions
   const bool SetChessOnGrid(Chess *chess, const int &chessboard_row, const int &chessboard_column);
+
+  void set_grid_basic_attributes(const wxPoint &left_top_grid_center_pos, const int &grid_width) { // grid_width must > 0
+    ChessboardGrid::set_grid_basic_attributes(left_top_grid_center_pos, grid_width);
+  }
 
 private:
   ChessboardGrid chessboard_grids_[kChessboardRow][kChessboardColumn];

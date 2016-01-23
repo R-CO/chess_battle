@@ -54,7 +54,7 @@ const int       ChessBattleMainFrame::kChessTextYCoordinateOffset_ = -23;
 
 ChessBattleMainFrame::ChessBattleMainFrame(wxWindow* parent)
   :
-  main_frame_base(parent)
+  main_frame_base(parent), chess_game_(ChessBattleMainFrame::kLeftTopGridCenterPos_, kChessGridWidth_)
 {
   InitGui();
 }
@@ -108,7 +108,7 @@ void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
   chess_game_.set_game_mode(static_cast<ChessGameMode>(main_frame_base::play_mode_radio_box_->GetSelection()));
 
   chess_game_.Reset();
-  chess_game_.PlaceChesses(kLeftTopGridCenterPos_, kChessGridWidth_);
+  chess_game_.PlaceChesses();
 
   PaintNow();
 }

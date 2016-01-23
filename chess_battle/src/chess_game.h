@@ -38,9 +38,9 @@ namespace rco {
   class ChessGame
   {
   public:
-    ChessGame();
+    ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
 
-    void PlaceChesses(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
+    void PlaceChesses(); 
 
     void Reset();
 
@@ -81,6 +81,10 @@ namespace rco {
   private:
     Chessboard chess_board_;
     std::vector<Chess> chesses_;
+
+    wxPoint left_top_grid_center_pos_;
+    int grid_width_;
+
     ChessGameStatus game_status_;
     ChessGameStyle game_style_;
     ChessGameMode game_mode_;

@@ -15,7 +15,8 @@
 
 namespace rco {
 
-ChessGame::ChessGame()
+ChessGame::ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_width)
+  : chess_board_(left_top_grid_center_pos, grid_width)
 {
   chesses_ =
   {
@@ -39,12 +40,15 @@ ChessGame::ChessGame()
     Chess(kRedChessNames[kChessGeneral])                                              // 帥
   };
 
+  left_top_grid_center_pos_ = left_top_grid_center_pos;
+  grid_width_ = grid_width;
+
   game_status_ = kChessGameNotStart;
   game_style_ = kChessGameStyleTraditional;
   game_mode_ = kChessGameModeOnePc;
 }
 
-void ChessGame::PlaceChesses(const wxPoint &left_top_grid_center_pos, const int &grid_width)
+void ChessGame::PlaceChesses()
 {
   time_t seed = time(nullptr);
 
@@ -54,7 +58,7 @@ void ChessGame::PlaceChesses(const wxPoint &left_top_grid_center_pos, const int 
     int column = 0;
     GetRandomPosition(row, column, seed);
     chess_board_.SetChessOnGrid(chess_ptr, row, column);
-    wxPoint chess_center = left_top_grid_center_pos + wxPoint((column * grid_width), (row * grid_width));
+    wxPoint chess_center = *(chess_board_.GetGridCenterPosition(row, column));
     chess_ptr->set_position(chess_center);
   }
 }
