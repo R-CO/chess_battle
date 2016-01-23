@@ -7,6 +7,8 @@
 
 #include "gui/chess_battle_main_frame.h"
 
+namespace rco {
+
 IMPLEMENT_APP(ChessBattleApp)
 
 bool ChessBattleApp::OnInit()
@@ -14,4 +16,6 @@ bool ChessBattleApp::OnInit()
   ChessBattleMainFrame *chess_battle_main_frame = new ChessBattleMainFrame(nullptr);
 
   return chess_battle_main_frame->Show();
+}
+
 }

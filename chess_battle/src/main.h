@@ -8,6 +8,9 @@
 
 #include <wx/app.h>
 
+// everything is under namespace "rco"
+namespace rco {
+
 class ChessBattleApp : public wxApp
 {
 public:
@@ -15,5 +18,7 @@ public:
 };
 
 DECLARE_APP(ChessBattleApp)
+
+}
 
 #endif

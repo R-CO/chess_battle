@@ -8,17 +8,19 @@
 #include <map>
 #include <vector>
 
-const std::vector<wxString> kBlackChessNames = 
+namespace rco {
+
+const std::vector<wxString> kBlackChessNames =
 {
   wxT("卒") /* 0 */, wxT("包") /* 1 */, wxT("馬") /* 2 */, wxT("車") /* 3 */,	wxT("象") /* 4 */, wxT("士") /* 5 */, wxT("將") /* 6 */
 };
-const std::vector<wxString> kRedChessNames = 
+const std::vector<wxString> kRedChessNames =
 {
   wxT("兵") /* 0 */, wxT("炮") /* 1 */, wxT("傌") /* 2 */, wxT("俥") /* 3 */, wxT("相") /* 4 */, wxT("仕") /* 5 */, wxT("帥") /* 6 */
 };
 
-std::map<wxString, ChessColor> Chess::kChessNameColorMap = 
-{ 
+std::map<wxString, ChessColor> Chess::kChessNameColorMap =
+{
   std::pair<wxString, ChessColor>(kBlackChessNames[0], kBlackChess), // wxT("卒")
   std::pair<wxString, ChessColor>(kBlackChessNames[1], kBlackChess), // wxT("包")
   std::pair<wxString, ChessColor>(kBlackChessNames[2], kBlackChess), // wxT("馬")
@@ -35,7 +37,7 @@ std::map<wxString, ChessColor> Chess::kChessNameColorMap =
   std::pair<wxString, ChessColor>(kRedChessNames[6], kRedChess)      // wxT("帥")
 };
 
-std::map<wxString, ChessType> Chess::kChessNameTypeMap = 
+std::map<wxString, ChessType> Chess::kChessNameTypeMap =
 {
   std::pair<wxString, ChessType>(kBlackChessNames[0], kChessSoldier),  // wxT("卒")
   std::pair<wxString, ChessType>(kBlackChessNames[1], kChessCannon),   // wxT("包")
@@ -60,10 +62,12 @@ void Chess::ResetChess(void)
 
 void Chess::InitChess(void)
 {
-  chessboard_grid_ = nullptr;
+  //chessboard_grid_ = nullptr;
   chess_color_ = get_chess_color(chess_name_);
   chess_status_ = kChessIsNegative;
   chess_position_ = wxPoint(0, 0);
   chess_type_ = get_chess_type(chess_name_);
   chess_exp_ = 0;
+}
+
 }

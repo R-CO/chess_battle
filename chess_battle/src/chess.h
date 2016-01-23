@@ -12,15 +12,17 @@
 #include <wx/gdicmn.h>
 #include <wx/string.h>
 
+namespace rco {
+
 enum ChessType
 {
-  kChessSoldier  = 0,
-  kChessCannon   = 1,
-  kChessHorse    = 2,
-  kChessCar      = 3,
+  kChessSoldier = 0,
+  kChessCannon = 1,
+  kChessHorse = 2,
+  kChessCar = 3,
   kChessElephant = 4,
-  kChessWarrior  = 5,
-  kChessGeneral  = 6
+  kChessWarrior = 5,
+  kChessGeneral = 6
 };
 
 enum ChessColor
@@ -32,7 +34,7 @@ enum ChessColor
 enum ChessStatus
 {
   kChessIsNegative = 0,
-  kChessIspositive = 1,
+  kChessIsPositive = 1,
   kChessIsDead = 2
 };
 
@@ -42,7 +44,7 @@ extern const std::vector<wxString> kBlackChessNames; // Definition is in "chess.
 // wxT("兵") /* 0 */, wxT("炮") /* 1 */, wxT("傌") /* 2 */, wxT("俥") /* 3 */, wxT("相") /* 4 */, wxT("仕") /* 5 */, wxT("帥") /* 6 */
 extern const std::vector<wxString> kRedChessNames; // Definition is in "chess.cpp"
 
-class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
+//class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
 
 class Chess
 {
@@ -57,19 +59,19 @@ public:
 
   // Get functions
 
-  inline const wxPoint get_position(void) {
+  inline const wxPoint get_position(void) const {
     return chess_position_;
   }
 
-  inline const int get_x_coordinate(void) {
+  inline const int get_x_coordinate(void) const {
     return chess_position_.x;
   }
 
-  inline const int get_y_coordinate(void) {
+  inline const int get_y_coordinate(void) const {
     return chess_position_.y;
   }
 
-  inline const ChessColor get_chess_color(void) {
+  inline const ChessColor get_chess_color(void) const {
     return chess_color_;
   }
 
@@ -77,20 +79,24 @@ public:
     return kChessNameColorMap[chess_name];
   }
 
-  inline const ChessStatus get_chess_status(void) {
+  inline const ChessStatus get_chess_status(void) const {
     return chess_status_;
   }
 
-  inline const ChessType get_chess_type(void) {
+  inline const ChessType get_chess_type(void) const {
     return chess_type_;
   }
 
-  inline const bool get_taking(void) {
+  inline const bool get_taking(void) const {
     return taking_;
   }
 
   inline static const ChessType get_chess_type(const wxString &chess_name) {
     return kChessNameTypeMap[chess_name];
+  }
+
+  inline const wxString get_chess_name(void) const {
+    return chess_name_;
   }
 
   // Set functions
@@ -123,7 +129,7 @@ protected:
   virtual void InitChess(void);
 
 private:
-  ChessboardGrid *chessboard_grid_;
+  //ChessboardGrid *chessboard_grid_;
   ChessColor chess_color_;
   ChessStatus chess_status_;
   wxString chess_name_;
@@ -136,5 +142,7 @@ private:
   static std::map<wxString, ChessColor> kChessNameColorMap;
   static std::map<wxString, ChessType> kChessNameTypeMap;
 };
+
+}
 
 #endif

@@ -10,10 +10,12 @@
 
 #include "chess.h"
 
+namespace rco {
+
 class ChessboardGrid
 {
 public:
-  ChessboardGrid() 
+  ChessboardGrid()
     : chess_(nullptr), is_chess_on_(false)
   {
   }
@@ -27,13 +29,11 @@ public:
     chess_ = nullptr;
   }
 
-  inline const bool is_chess_on(void) {
+  inline const bool is_chess_on(void) const {
     return is_chess_on_;
   }
 
-  inline void set_chess(Chess *chess) {
-    chess_ = chess;
-  }
+  void set_chess(Chess *chess);
 
 private:
   Chess *chess_;
@@ -50,6 +50,10 @@ public:
 
   ~Chessboard();
 
+  inline const bool is_chess_on_grid(const int &row, const int &column) const {
+    return chessboard_grids_[row][column].is_chess_on();
+  }
+
   // get functions
 
   // set functions
@@ -58,5 +62,7 @@ public:
 private:
   ChessboardGrid chessboard_grids_[kChessboardRow][kChessboardColumn];
 };
+
+}
 
 #endif

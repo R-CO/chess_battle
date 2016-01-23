@@ -1,5 +1,7 @@
 ﻿#include "chessboard.h"
 
+namespace rco {
+
 Chessboard::Chessboard()
 {
   // Current version is empty.
@@ -10,13 +12,25 @@ Chessboard::~Chessboard()
   // Current version is empty.
 }
 
-const bool Chessboard::SetChessOnGrid(Chess *chess, const int &chessboard_row, const int &chessboard_column)
+const bool Chessboard::SetChessOnGrid(Chess *chess, const int &row, const int &column)
 {
-  if (chessboard_row < 0 || chessboard_row >= kChessboardRow ||
-      chessboard_column < 0 || chessboard_column >= kChessboardColumn) {
+  if (row < 0 || row >= kChessboardRow ||
+      column < 0 || column >= kChessboardColumn) {
     return false;
   } else {
-    chessboard_grids_[chessboard_row][chessboard_column].set_chess(chess);
+    chessboard_grids_[row][column].set_chess(chess);
     return true;
   }
+}
+
+void ChessboardGrid::set_chess(Chess * chess)
+{
+  chess_ = chess;
+  if (chess_ == nullptr) {
+    is_chess_on_ = false;
+  } else {
+    is_chess_on_ = true;
+  }
+}
+
 }

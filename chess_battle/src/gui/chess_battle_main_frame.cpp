@@ -9,15 +9,48 @@
 #include <wx/dcbuffer.h>
 #include <wx/socket.h>
 
-// static const class members define
+#include "../chess.h"
+
+// TODO: To change the implementation of painting.
+
+namespace rco {
+
+// static const class members define begin
 const wxBrush   ChessBattleMainFrame::kChessBoardBackgroundBrush_ = wxBrush(wxColour(255, 200, 40));
 
 const wxColour  ChessBattleMainFrame::kChessBoardTextForegroundColour_ = wxColour(0, 0, 200);
 
-const wxString  ChessBattleMainFrame::kLeftChessBoardString_  = wxT("起手無回大丈夫");
+const wxString  ChessBattleMainFrame::kLeftChessBoardString_ = wxT("起手無回大丈夫");
 const wxString  ChessBattleMainFrame::kRightChessBoardString_ = wxT("觀棋不語真君子");
 
 const wxFont    ChessBattleMainFrame::kLeftRightChessBoardTextFont_ = wxFont(32, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("標楷體"));
+
+// for drawing chess settings begin
+const wxColour  ChessBattleMainFrame::kChessBackColour_ = wxColour(130, 0, 100);
+const wxColour  ChessBattleMainFrame::kChessFrontColour_ = *wxWHITE;
+const wxBrush   ChessBattleMainFrame::kChessBackBrush_ = wxBrush(ChessBattleMainFrame::kChessBackColour_);
+const wxBrush   ChessBattleMainFrame::kChessFrontBrush_ = wxBrush(ChessBattleMainFrame::kChessFrontColour_);
+
+const wxColour  ChessBattleMainFrame::kBlackChessColour_ = *wxBLACK;
+const wxColour  ChessBattleMainFrame::kRedChessColour_ = *wxRED;
+
+const int       ChessBattleMainFrame::kChessFontSize_ = 35;
+const wxFont    ChessBattleMainFrame::kChessFont_ = wxFont(ChessBattleMainFrame::kChessFontSize_, wxSWISS, 
+                                                           wxNORMAL, wxNORMAL, false, wxT("標楷體"));
+
+const wxPen     ChessBattleMainFrame::kBlackPenForInnerCircle_ = wxPen(ChessBattleMainFrame::kBlackChessColour_, 2);
+const wxPen     ChessBattleMainFrame::kRedPenForInnerCircle_ = wxPen(ChessBattleMainFrame::kRedChessColour_, 2);
+
+const wxPoint   ChessBattleMainFrame::kLeftTopGridCenterPos_ = wxPoint(87, 47);
+
+const int       ChessBattleMainFrame::kChessGridWidth_ = 75;
+const int       ChessBattleMainFrame::kChessInnerRadius_ = ChessBattleMainFrame::kChessFontSize_ - 7;
+const int       ChessBattleMainFrame::kChessOuterRadius_ = ChessBattleMainFrame::kChessInnerRadius_ + 3;
+const int       ChessBattleMainFrame::kChessTextXCoordinateOffset_ = -23;
+const int       ChessBattleMainFrame::kChessTextYCoordinateOffset_ = -23;
+// for drawing chess settings begin end
+
+// static const class members define end
 
 ChessBattleMainFrame::ChessBattleMainFrame(wxWindow* parent)
   :
@@ -112,6 +145,9 @@ void ChessBattleMainFrame::Render(wxDC &dc)
   wxBrush old_brush = dc.GetBackground();
 
   DrawChessBoard(dc);
+  if (chess_game_.get_game_status() != kChessGameNotStart) {
+    DrawAllChesses(dc);
+  }
 
   dc.SetBackground(old_brush);
 }
@@ -133,17 +169,16 @@ void ChessBattleMainFrame::DrawLines(wxDC & dc)
 
   wxPoint p1(50, 10);
   wxPoint p2(50, 610);
-  const int gap(75);
   int i(0);
 
   for (i = 0; i < 5; ++i) {
-    p1 = wxPoint(50 + gap*i, 10);
-    p2 = wxPoint(50 + gap*i, 610);
+    p1 = wxPoint(50 + kChessGridWidth_*i, 10);
+    p2 = wxPoint(50 + kChessGridWidth_*i, 610);
     dc.DrawLine(p1, p2);
   }
   for (i = 0; i < 10; ++i) {
-    p1 = wxPoint(50, 10 + gap*i);
-    p2 = wxPoint(350, 10 + gap*i);
+    p1 = wxPoint(50, 10 + kChessGridWidth_*i);
+    p2 = wxPoint(350, 10 + kChessGridWidth_*i);
     dc.DrawLine(p1, p2);
   }
 
@@ -205,12 +240,106 @@ void ChessBattleMainFrame::DrawDetail(wxDC & dc, const wxPoint & center, const b
   dc.SetPen(old_pen);
 }
 
+void ChessBattleMainFrame::DrawChess(wxDC & dc, const Chess &chess)
+{
+  switch (chess.get_chess_status()) {
+  case kChessIsNegative:
+    DrawNegativeChess(dc, chess);
+    break;
+
+  case kChessIsPositive:
+    DrawPostiveChess(dc, chess);
+    break;
+
+  case kChessIsDead:
+    DrawDeadChess(dc, chess);
+    break;
+  }
+}
+
+void ChessBattleMainFrame::DrawChess(wxDC & dc, const Chess * chess)
+{
+  DrawChess(dc, *chess);
+}
+
+void ChessBattleMainFrame::DrawNegativeChess(wxDC & dc, const Chess & chess)
+{
+  wxBrush old_brush = dc.GetBrush();
+  wxColour old_text_foreground = dc.GetTextForeground();
+  wxFont old_font = dc.GetFont();
+  wxPen old_pen = dc.GetPen();
+
+  dc.SetBrush(kChessBackBrush_);
+  dc.DrawCircle(chess.get_position(), kChessOuterRadius_);
+
+  dc.SetBrush(old_brush);
+  dc.SetFont(old_font);
+  dc.SetPen(old_pen);
+  dc.SetTextForeground(old_text_foreground);
+}
+
+void ChessBattleMainFrame::DrawPostiveChess(wxDC & dc, const Chess & chess)
+{
+  wxBrush old_brush = dc.GetBrush();
+  wxColour old_text_foreground = dc.GetTextForeground();
+  wxFont old_font = dc.GetFont();
+  wxPen old_pen = dc.GetPen();
+
+  
+  dc.SetBrush(kChessFrontBrush_);
+  dc.DrawCircle(chess.get_position(), kChessOuterRadius_);
+
+  switch (chess.get_chess_color()) {
+  case kBlackChess:
+    dc.SetPen(kBlackPenForInnerCircle_);
+    dc.SetTextForeground(kBlackChessColour_);
+    break;
+
+  case kRedChess:
+    dc.SetPen(kRedPenForInnerCircle_);
+    dc.SetTextForeground(kRedChessColour_);
+    break;
+  }
+  dc.DrawCircle(chess.get_position(), kChessInnerRadius_);
+
+  dc.SetFont(kChessFont_);
+  dc.DrawText(chess.get_chess_name(),
+              (chess.get_position() + wxPoint(kChessTextXCoordinateOffset_, kChessTextYCoordinateOffset_)));
+
+  dc.SetBrush(old_brush);
+  dc.SetFont(old_font);
+  dc.SetPen(old_pen);
+  dc.SetTextForeground(old_text_foreground);
+}
+
+void ChessBattleMainFrame::DrawDeadChess(wxDC & dc, const Chess & chess)
+{
+  wxBrush old_brush = dc.GetBrush();
+  wxColour old_text_foreground = dc.GetTextForeground();
+  wxFont old_font = dc.GetFont();
+  wxPen old_pen = dc.GetPen();
+
+  // TODO: To draw dead chess
+
+  dc.SetBrush(old_brush);
+  dc.SetFont(old_font);
+  dc.SetPen(old_pen);
+  dc.SetTextForeground(old_text_foreground);
+}
+
+void ChessBattleMainFrame::DrawAllChesses(wxDC & dc)
+{
+  for (size_t chess_index = 0; chess_index < chess_game_.get_number_of_chesses(); ++chess_index) {
+    DrawChess(dc, chess_game_.get_chess(chess_index));
+  }
+}
+
 void ChessBattleMainFrame::InitGui(void)
 {
   chess_board_panel_->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
   wxIPV4address remote;
-  remote.Hostname(wxT("www.google.com.tw"));
+  remote.Hostname(wxT("www.google.com"));
   remote.Service(80);
 
   wxIPV4address local;
@@ -223,4 +352,6 @@ void ChessBattleMainFrame::InitGui(void)
   wxString ipAddr = local.IPAddress();
 
   local_ip_static_text_->SetLabel(_T("local IP: ") + ipAddr);
+}
+
 }
