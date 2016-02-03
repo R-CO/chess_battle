@@ -84,6 +84,21 @@ void ChessGame::PlaceChesses()
   }
 }
 
+bool ChessGame::OpenChess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
+{
+  Chess *chess = GetHitChess(mouse_click_point, chess_outer_radius);
+  if (chess == nullptr) {
+    return false;
+  }
+
+  if (chess->get_chess_status() == kChessIsNegative) {
+    chess->set_chess_status(kChessIsPositive);
+    return true;
+  }
+
+  return false;
+}
+
 void ChessGame::Reset()
 {
   ResetChesses();
@@ -125,6 +140,21 @@ void ChessGame::GetRandomPosition(int &row, int &column, const time_t &seed) con
     row = random_generator(kChessboardRow);
     column = random_generator(kChessboardColumn);
   } while (chess_board_.is_chess_on_grid(row, column) == true);
+}
+
+Chess * ChessGame::GetHitChess(const wxPoint &hit_point, const int &chess_outer_radius)
+{
+  wxPoint position_diff;
+  const int chess_outer_radius_square = chess_outer_radius * chess_outer_radius;
+  for (std::vector<Chess>::iterator itor = chesses_.begin(); itor != chesses_.end(); ++itor) {
+    position_diff = hit_point - itor->get_position();
+    if ((position_diff.x * position_diff.x + position_diff.y * position_diff.y)
+        <= chess_outer_radius_square) {
+      return itor._Ptr;
+    }
+  }
+
+  return nullptr;
 }
 
 }

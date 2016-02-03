@@ -56,12 +56,19 @@ namespace rco {
     kChessGameModeConnection = 1,
   };
 
+  enum ChessNowPlayer
+  {
+    kPlayerOne = 1,
+    kPlayerTwo = 2,
+  };
+
   class ChessGame
   {
   public:
     ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
 
     void PlaceChesses(); 
+    bool OpenChess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
 
     void Reset();
 
@@ -96,6 +103,8 @@ namespace rco {
   protected:
     virtual void GetRandomPosition(int &row, int &column, const time_t &seed = time(nullptr)) const;
     
+    Chess *GetHitChess(const wxPoint &hit_point, const int &chess_outer_radius);
+
     void ResetChesses(void);
     void ResetChessboardGrids(void);
 

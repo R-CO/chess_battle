@@ -75,15 +75,16 @@ const int       ChessBattleMainFrame::kChessTextYCoordinateOffset_ = -23;
 
 ChessBattleMainFrame::ChessBattleMainFrame(wxWindow* parent)
   :
-  main_frame_base(parent), chess_game_(ChessBattleMainFrame::kLeftTopGridCenterPos_, kChessGridWidth_)
+  main_frame_base(parent), chess_game_(ChessBattleMainFrame::kLeftTopGridCenterPos_, kChessGridWidth_),
+  chess_board_panel_dc_(chess_board_panel_)
 {
   InitGui();
 }
 
 void ChessBattleMainFrame::PaintNow(void)
 {
-  wxClientDC dc(chess_board_panel_);
-  wxBufferedDC buffered_dc(&dc);
+  //wxClientDC dc(chess_board_panel_);
+  wxBufferedDC buffered_dc(&chess_board_panel_dc_);
   Render(buffered_dc);
 }
 
@@ -96,6 +97,9 @@ void ChessBattleMainFrame::OnCloseMainFrameBase(wxCloseEvent& event)
 void ChessBattleMainFrame::OnLeftDClickChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftDClickChessBoardPanel
+  if (chess_game_.OpenChess(event.GetLogicalPosition(wxClientDC(chess_board_panel_)), kChessOuterRadius_) == true) {
+    PaintNow();
+  }
 }
 
 void ChessBattleMainFrame::OnLeftDownChessBoardPanel(wxMouseEvent& event)
@@ -116,8 +120,8 @@ void ChessBattleMainFrame::OnMotionChessBoardPanel(wxMouseEvent& event)
 void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
 {
   // TODO: Implement OnPaintChessBoardPanel
-  wxBufferedPaintDC dc(chess_board_panel_);
-  Render(dc);
+  //wxBufferedPaintDC dc(chess_board_panel_);
+  //Render(dc);
   PaintNow();
 }
 
