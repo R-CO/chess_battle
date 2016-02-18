@@ -97,7 +97,7 @@ void ChessBattleMainFrame::OnCloseMainFrameBase(wxCloseEvent& event)
 void ChessBattleMainFrame::OnLeftDClickChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftDClickChessBoardPanel
-  if (chess_game_.OpenChess(event.GetLogicalPosition(wxClientDC(chess_board_panel_)), kChessOuterRadius_) == true) {
+  if (chess_game_.OpenChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
     PaintNow();
   }
 }
@@ -105,24 +105,35 @@ void ChessBattleMainFrame::OnLeftDClickChessBoardPanel(wxMouseEvent& event)
 void ChessBattleMainFrame::OnLeftDownChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftDownChessBoardPanel
+  if (chess_game_.TakeChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
+    PaintNow();
+  }
 }
 
 void ChessBattleMainFrame::OnLeftUpChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftUpChessBoardPanel
+  if (chess_game_.MoveChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
+    
+  }
+
+  PaintNow();
 }
 
 void ChessBattleMainFrame::OnMotionChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnMotionChessBoardPanel
+  if (chess_game_.SetChessPosition(event.GetLogicalPosition(chess_board_panel_dc_)) == true) {
+    PaintNow();
+  }
 }
 
 void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
 {
   // TODO: Implement OnPaintChessBoardPanel
-  //wxBufferedPaintDC dc(chess_board_panel_);
-  //Render(dc);
-  PaintNow();
+  wxBufferedPaintDC dc(chess_board_panel_);
+  Render(dc);
+  //PaintNow();
 }
 
 void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
@@ -362,8 +373,19 @@ void ChessBattleMainFrame::DrawDeadChess(wxDC & dc, const Chess & chess)
 
 void ChessBattleMainFrame::DrawAllChesses(wxDC & dc)
 {
+  Chess *chess = nullptr;
+  Chess *chess_be_taken = nullptr;
   for (size_t chess_index = 0; chess_index < chess_game_.get_number_of_chesses(); ++chess_index) {
-    DrawChess(dc, chess_game_.get_chess(chess_index));
+    chess = chess_game_.get_chess(chess_index);
+    if (chess->get_taking() == true) {
+      chess_be_taken = chess;
+      continue;
+    }
+    DrawChess(dc, (*chess));
+  }
+
+  if (chess_be_taken != nullptr) {
+    DrawChess(dc, (*chess_be_taken));
   }
 }
 

@@ -24,8 +24,8 @@
 *** Mail: daniel1820kobe@gmail.com
 *** Date: 2016-01-13
 **/
-#ifndef CHESS_BATTLE_CHESSBOARD_H
-#define CHESS_BATTLE_CHESSBOARD_H
+#ifndef CHESS_BATTLE_chess_board_H
+#define CHESS_BATTLE_chess_board_H
 
 #include <wx/msgdlg.h>
 #include <wx/gdicmn.h>
@@ -65,11 +65,31 @@ public:
     return left_top_grid_center_pos_;
   }
 
+  inline Chess *get_chess(void) const {
+    return chess_;
+  }
+
+  inline const int get_column(void) const {
+    return column_;
+  }
+
+  inline const int get_row(void) const {
+    return row_;
+  }
+
   const wxPoint *GetGridCenterPosition(void) const;
 
   // Set functions
 
   void SetChess(Chess *chess);
+
+  inline void set_column(const int &column) {
+    column_ = column;
+  }
+
+  inline void set_row(const int &row) {
+    row_ = row;
+  }
 
   inline void set_grid_center_position(const wxPoint &grid_center_position) {
     grid_center_position_ = grid_center_position;
@@ -85,6 +105,8 @@ private:
   Chess *chess_;
   bool is_chess_on_;
   wxPoint grid_center_position_;
+  int row_;
+  int column_;
   
   static wxPoint left_top_grid_center_pos_;
   static int grid_width_;
@@ -113,8 +135,14 @@ public:
     return ChessboardGrid::get_grid_width();
   }
 
+  inline ChessboardGrid *get_chessboard_grid(const int &row, const int &column) {
+    return &(chessboard_grids_[row][column]);
+  }
+
+  ChessboardGrid *GetChessBoardGrid(const wxPoint &hit_point, const int &chess_outer_radius);
+
   // set functions
-  const bool SetChessOnGrid(Chess *chess, const int &chessboard_row, const int &chessboard_column);
+  const bool SetChessOnGrid(Chess *chess, const int &chess_board_row, const int &chess_board_column);
 
   void set_grid_basic_attributes(const wxPoint &left_top_grid_center_pos, const int &grid_width) { // grid_width must > 0
     ChessboardGrid::set_grid_basic_attributes(left_top_grid_center_pos, grid_width);

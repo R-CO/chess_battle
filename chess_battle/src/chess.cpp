@@ -83,13 +83,13 @@ void Chess::ResetChess(void)
 
 void Chess::InitChess(void)
 {
-  //chessboard_grid_ = nullptr;
+  chessboard_grid_ = nullptr;
   chess_color_ = get_chess_color(chess_name_);
   chess_status_ = kChessIsNegative;
-  //chess_status_ = kChessIsPositive;
   chess_position_ = wxPoint(0, 0);
   chess_type_ = get_chess_type(chess_name_);
   chess_exp_ = 0;
+  taking_ = false;
 }
 
 }

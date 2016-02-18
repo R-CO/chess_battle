@@ -35,6 +35,8 @@ Chessboard::Chessboard(const wxPoint &left_top_grid_center_pos, const int &grid_
     for (int column = 0; column < kChessboardColumn; ++column) {
       wxPoint grid_center_pos = left_top_grid_center_pos + wxPoint((column * grid_width), (row * grid_width));
       chessboard_grids_[row][column].set_grid_center_position(grid_center_pos);
+      chessboard_grids_[row][column].set_column(column);
+      chessboard_grids_[row][column].set_row(row);
     }
   }
 }
@@ -61,6 +63,23 @@ const wxPoint * Chessboard::GetGridCenterPosition(const int & row, const int & c
   } else {
     return chessboard_grids_[row][column].GetGridCenterPosition();
   }
+}
+
+ChessboardGrid * Chessboard::GetChessBoardGrid(const wxPoint & hit_point, const int & chess_outer_radius)
+{
+  wxPoint position_diff;
+  const int chess_outer_radius_square = chess_outer_radius * chess_outer_radius;
+  for (int row = 0; row < kChessboardRow; ++row) {
+    for (int column = 0; column < kChessboardColumn; ++column) {
+      position_diff = hit_point - *(chessboard_grids_[row][column].GetGridCenterPosition());
+      if ((position_diff.x * position_diff.x + position_diff.y * position_diff.y) <= 
+          chess_outer_radius_square) {
+        return &(chessboard_grids_[row][column]);
+      }
+    }
+  }
+
+  return nullptr;
 }
 
 const bool Chessboard::SetChessOnGrid(Chess *chess, const int &row, const int &column)

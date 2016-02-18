@@ -65,7 +65,7 @@ extern const std::vector<wxString> kBlackChessNames; // Definition is in "chess.
 // wxT("兵") /* 0 */, wxT("炮") /* 1 */, wxT("傌") /* 2 */, wxT("俥") /* 3 */, wxT("相") /* 4 */, wxT("仕") /* 5 */, wxT("帥") /* 6 */
 extern const std::vector<wxString> kRedChessNames; // Definition is in "chess.cpp"
 
-//class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
+class ChessboardGrid; // Forward declartion. Go to "chessboard.h" and "chessboard.cpp" for more detail.
 
 class Chess
 {
@@ -120,6 +120,10 @@ public:
     return chess_name_;
   }
 
+  inline ChessboardGrid *get_chessboard_grid(void) {
+    return chessboard_grid_;
+  }
+
   // Set functions
 
   inline void set_position(const wxPoint &position) {
@@ -142,6 +146,10 @@ public:
     chess_status_ = chess_status;
   }
 
+  inline void set_chessboard_grid(ChessboardGrid *chessboard_grid) {
+    chessboard_grid_ = chessboard_grid;
+  }
+
   inline void set_taking(const bool &taking) {
     taking_ = taking;
   }
@@ -149,7 +157,7 @@ public:
 protected:
   virtual void InitChess(void);
 
-  //ChessboardGrid *chessboard_grid_;
+  ChessboardGrid *chessboard_grid_;
   ChessColor chess_color_;
   ChessStatus chess_status_;
   wxString chess_name_;

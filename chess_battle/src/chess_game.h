@@ -62,13 +62,27 @@ namespace rco {
     kPlayerTwo = 2,
   };
 
+  struct Player
+  {
+    Player() {
+      color_ = kRedChess;
+      moved_ = false;
+    }
+
+    ChessColor color_;
+    bool moved_;
+  };
+
   class ChessGame
   {
   public:
     ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
 
     void PlaceChesses(); 
+    // TODO: MoveChess isn't ready.
+    bool MoveChess(const wxPoint &mouse_position, const int &chess_outer_radius);
     bool OpenChess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
+    bool TakeChess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
 
     void Reset();
 
@@ -100,18 +114,25 @@ namespace rco {
       game_mode_ = game_mode;
     }
 
+    bool SetChessPosition(const wxPoint &mouse_position);
+
   protected:
     virtual void GetRandomPosition(int &row, int &column, const time_t &seed = time(nullptr)) const;
     
     Chess *GetHitChess(const wxPoint &hit_point, const int &chess_outer_radius);
+    ChessboardGrid *GetHitChessBoardGrid(const wxPoint &hit_point, const int &chess_outer_radius);
 
     void ResetChesses(void);
     void ResetChessboardGrids(void);
 
-
-
     Chessboard chess_board_;
     std::vector<Chess> chesses_;
+    Player player_[2];
+    int current_player_;
+
+    Chess *chess_be_taken_;
+
+    wxPoint chess_old_position;
 
     wxPoint left_top_grid_center_pos_;
     int grid_width_;

@@ -67,21 +67,47 @@ ChessGame::ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_wi
   game_status_ = kChessGameNotStart;
   game_style_ = kChessGameStyleTraditional;
   game_mode_ = kChessGameModeOnePc;
+
+  chess_be_taken_ = nullptr;
 }
 
 void ChessGame::PlaceChesses()
 {
   time_t seed = time(nullptr);
 
+  Chess *chess_ptr = nullptr;
   for (size_t chess_index = 0; chess_index < chesses_.size(); ++chess_index) {
-    Chess *chess_ptr = &(chesses_[chess_index]);
+    chess_ptr = &(chesses_[chess_index]);
     int row = 0;
     int column = 0;
     GetRandomPosition(row, column, seed);
     chess_board_.SetChessOnGrid(chess_ptr, row, column);
-    wxPoint chess_center = *(chess_board_.GetGridCenterPosition(row, column));
-    chess_ptr->set_position(chess_center);
+    chess_ptr->set_position(*(chess_board_.GetGridCenterPosition(row, column)));
+    chess_ptr->set_chessboard_grid(chess_board_.get_chessboard_grid(row, column));
   }
+}
+
+bool ChessGame::MoveChess(const wxPoint & mouse_position, const int & chess_outer_radius)
+{
+  if (chess_be_taken_ != nullptr) {
+    chess_be_taken_->set_position(mouse_position);
+    // TODO: Implement here
+
+    ChessboardGrid *chessboard_grid = chess_board_.GetChessBoardGrid(mouse_position, chess_outer_radius);
+    if (chessboard_grid == nullptr) {
+      chess_be_taken_->set_position(*(chess_be_taken_->get_chessboard_grid()->GetGridCenterPosition()));
+
+      chess_be_taken_->set_taking(false);
+      chess_be_taken_ = nullptr;
+      return false;
+    }
+
+    chess_be_taken_->set_taking(false);
+    chess_be_taken_ = nullptr;
+    return true;
+  }
+
+  return false;
 }
 
 bool ChessGame::OpenChess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
@@ -93,7 +119,34 @@ bool ChessGame::OpenChess(const wxPoint & mouse_click_point, const int & chess_o
 
   if (chess->get_chess_status() == kChessIsNegative) {
     chess->set_chess_status(kChessIsPositive);
+    if (game_status_ == kChessGameNotStart) {
+      game_status_ = kChessGameStart;
+      if (chess->get_chess_color() == kBlackChess) {
+        player_[0].color_ = kBlackChess;
+        player_[1].color_ = kRedChess;
+      } else {
+        player_[0].color_ = kRedChess;
+        player_[1].color_ = kBlackChess;
+      }
+    }
     return true;
+  }
+
+  return false;
+}
+
+bool ChessGame::TakeChess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
+{
+  chess_be_taken_ = GetHitChess(mouse_click_point, chess_outer_radius);
+  
+  if (chess_be_taken_ != nullptr ) {
+    if (chess_be_taken_->get_chess_status() != kChessIsPositive) {
+      chess_be_taken_ = nullptr;
+    } else {
+      chess_be_taken_->set_position(mouse_click_point);
+      chess_be_taken_->set_taking(true);
+      return true;
+    }
   }
 
   return false;
@@ -131,6 +184,16 @@ Chess * ChessGame::get_chess(const size_t & chess_number)
   }
 }
 
+bool ChessGame::SetChessPosition(const wxPoint & mouse_position)
+{
+  if (chess_be_taken_ != nullptr) {
+    chess_be_taken_->set_position(mouse_position);
+    return true;
+  }
+
+  return false;
+}
+
 void ChessGame::GetRandomPosition(int &row, int &column, const time_t &seed) const
 {
   boost::mt19937 random_engine(seed);
@@ -155,6 +218,11 @@ Chess * ChessGame::GetHitChess(const wxPoint &hit_point, const int &chess_outer_
   }
 
   return nullptr;
+}
+
+inline ChessboardGrid * ChessGame::GetHitChessBoardGrid(const wxPoint & hit_point, const int & chess_outre_radius)
+{
+  return chess_board_.GetChessBoardGrid(hit_point, chess_outre_radius);
 }
 
 }
