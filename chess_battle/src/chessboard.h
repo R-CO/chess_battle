@@ -24,8 +24,8 @@
 *** Mail: daniel1820kobe@gmail.com
 *** Date: 2016-01-13
 **/
-#ifndef CHESS_BATTLE_chess_board_H
-#define CHESS_BATTLE_chess_board_H
+#ifndef CHESS_BATTLE_CHESS_BOARD_H
+#define CHESS_BATTLE_CHESS_BOARD_H
 
 #include <wx/msgdlg.h>
 #include <wx/gdicmn.h>

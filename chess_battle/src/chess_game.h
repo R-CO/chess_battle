@@ -79,10 +79,10 @@ namespace rco {
     ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_width); // need to set parameter left_top_grid_pos & grid_width
 
     void PlaceChesses(); 
-    // TODO: MoveChess isn't ready.
-    bool MoveChess(const wxPoint &mouse_position, const int &chess_outer_radius);
-    bool OpenChess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
-    bool TakeChess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
+    // TODO: IsMoveChessSuccess isn't ready.
+    bool IsMoveChessSuccess(const wxPoint &mouse_position, const int &chess_outer_radius);
+    bool IsOpenChessSuccess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
+    bool IsTakeChessSuccess(const wxPoint &mouse_click_point, const int &chess_outer_radius);
 
     void Reset();
 
@@ -122,8 +122,13 @@ namespace rco {
     Chess *GetHitChess(const wxPoint &hit_point, const int &chess_outer_radius);
     ChessboardGrid *GetHitChessBoardGrid(const wxPoint &hit_point, const int &chess_outer_radius);
 
+    const int GetMoveDistance(Chess *chess_be_moved, ChessboardGrid *target_chessboard_grid);
+
     void ResetChesses(void);
     void ResetChessboardGrids(void);
+
+    bool IsLegalChessMovement(Chess *chess_be_moved, ChessboardGrid *target_chessboard_grid);
+    void MoveChess(ChessboardGrid *target_chessboard_grid);
 
     Chessboard chess_board_;
     std::vector<Chess> chesses_;

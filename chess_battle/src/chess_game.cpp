@@ -87,14 +87,14 @@ void ChessGame::PlaceChesses()
   }
 }
 
-bool ChessGame::MoveChess(const wxPoint & mouse_position, const int & chess_outer_radius)
+bool ChessGame::IsMoveChessSuccess(const wxPoint & mouse_position, const int & chess_outer_radius)
 {
   if (chess_be_taken_ != nullptr) {
     chess_be_taken_->set_position(mouse_position);
     // TODO: Implement here
 
-    ChessboardGrid *chessboard_grid = chess_board_.GetChessBoardGrid(mouse_position, chess_outer_radius);
-    if (chessboard_grid == nullptr) {
+    ChessboardGrid *target_chessboard_grid = chess_board_.GetChessBoardGrid(mouse_position, chess_outer_radius);
+    if (target_chessboard_grid == nullptr) {
       chess_be_taken_->set_position(*(chess_be_taken_->get_chessboard_grid()->GetGridCenterPosition()));
 
       chess_be_taken_->set_taking(false);
@@ -102,15 +102,25 @@ bool ChessGame::MoveChess(const wxPoint & mouse_position, const int & chess_oute
       return false;
     }
 
-    chess_be_taken_->set_taking(false);
-    chess_be_taken_ = nullptr;
-    return true;
+    
+    if (IsLegalChessMovement(chess_be_taken_, target_chessboard_grid) == true) {
+      MoveChess(target_chessboard_grid);
+      chess_be_taken_->set_taking(false);
+      chess_be_taken_ = nullptr;
+      return true;
+    } else {
+      chess_be_taken_->set_position(*(chess_be_taken_->get_chessboard_grid()->GetGridCenterPosition()));
+
+      chess_be_taken_->set_taking(false);
+      chess_be_taken_ = nullptr;
+      return false;
+    }
   }
 
   return false;
 }
 
-bool ChessGame::OpenChess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
+bool ChessGame::IsOpenChessSuccess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
 {
   Chess *chess = GetHitChess(mouse_click_point, chess_outer_radius);
   if (chess == nullptr) {
@@ -135,7 +145,7 @@ bool ChessGame::OpenChess(const wxPoint & mouse_click_point, const int & chess_o
   return false;
 }
 
-bool ChessGame::TakeChess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
+bool ChessGame::IsTakeChessSuccess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
 {
   chess_be_taken_ = GetHitChess(mouse_click_point, chess_outer_radius);
   
@@ -168,6 +178,54 @@ void ChessGame::ResetChesses(void)
 void ChessGame::ResetChessboardGrids(void)
 {
   chess_board_.ResetChessboardGrids();
+}
+
+bool ChessGame::IsLegalChessMovement(Chess * chess_be_moved, ChessboardGrid * target_chessboard_grid)
+{
+  // TODO: IsLegalChessMovement
+  Chess *chess_on_target_grid = target_chessboard_grid->get_chess();
+
+  const int move_distance = GetMoveDistance(chess_be_moved, target_chessboard_grid);
+
+  if ((target_chessboard_grid->is_chess_on() == false) && (move_distance == 1)) {
+    return true;
+  } else if ((target_chessboard_grid->is_chess_on() == true) &&
+             (target_chessboard_grid->get_chess()->get_chess_status() == kChessIsPositive)) {
+    if (chess_be_moved->get_chess_color() == chess_on_target_grid->get_chess_color()) {
+      return false;
+    }
+
+    if ((chess_be_moved->get_chess_type() >= chess_on_target_grid->get_chess_type()) &&
+        (chess_be_moved->get_chess_type() != kChessCannon) &&
+        (move_distance == 1) &&
+        ((chess_be_moved->get_chess_type() - chess_on_target_grid->get_chess_type()) != 6)) {
+      chess_on_target_grid->set_chess_status(kChessIsDead);
+      chess_on_target_grid->set_chessboard_grid(nullptr);
+      chess_on_target_grid->set_position(wxPoint(400, 200)); // TODO: dead chess position
+      return true;
+    } else if ((chess_be_moved->get_chess_type() == kChessSoldier) &&
+               (chess_on_target_grid->get_chess_type() == kChessGeneral) &&
+               (move_distance == 1)) {
+      chess_on_target_grid->set_chess_status(kChessIsDead);
+      chess_on_target_grid->set_chessboard_grid(nullptr);
+      chess_on_target_grid->set_position(wxPoint(400, 200));
+      return true;
+    }
+  }
+
+  return false;
+}
+
+void ChessGame::MoveChess(ChessboardGrid * target_chessboard_grid)
+{
+  if (target_chessboard_grid == nullptr) {
+    return;
+  }
+
+  chess_be_taken_->get_chessboard_grid()->SetChess(nullptr);
+  chess_be_taken_->set_position(*(target_chessboard_grid->GetGridCenterPosition()));
+  chess_be_taken_->set_chessboard_grid(target_chessboard_grid);
+  target_chessboard_grid->SetChess(chess_be_taken_);
 }
 
 Chess * ChessGame::get_chess(const int &chess_number)
@@ -223,6 +281,12 @@ Chess * ChessGame::GetHitChess(const wxPoint &hit_point, const int &chess_outer_
 inline ChessboardGrid * ChessGame::GetHitChessBoardGrid(const wxPoint & hit_point, const int & chess_outre_radius)
 {
   return chess_board_.GetChessBoardGrid(hit_point, chess_outre_radius);
+}
+
+const int ChessGame::GetMoveDistance(Chess * chess_be_moved, ChessboardGrid * target_chessboard_grid)
+{
+  return abs(chess_be_taken_->get_chessboard_grid()->get_row() - target_chessboard_grid->get_row()) +
+         abs(chess_be_taken_->get_chessboard_grid()->get_column() - target_chessboard_grid->get_column());
 }
 
 }

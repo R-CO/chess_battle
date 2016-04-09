@@ -97,7 +97,7 @@ void ChessBattleMainFrame::OnCloseMainFrameBase(wxCloseEvent& event)
 void ChessBattleMainFrame::OnLeftDClickChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftDClickChessBoardPanel
-  if (chess_game_.OpenChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
+  if (chess_game_.IsOpenChessSuccess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
     PaintNow();
   }
 }
@@ -105,7 +105,7 @@ void ChessBattleMainFrame::OnLeftDClickChessBoardPanel(wxMouseEvent& event)
 void ChessBattleMainFrame::OnLeftDownChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftDownChessBoardPanel
-  if (chess_game_.TakeChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
+  if (chess_game_.IsTakeChessSuccess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
     PaintNow();
   }
 }
@@ -113,7 +113,7 @@ void ChessBattleMainFrame::OnLeftDownChessBoardPanel(wxMouseEvent& event)
 void ChessBattleMainFrame::OnLeftUpChessBoardPanel(wxMouseEvent& event)
 {
   // TODO: Implement OnLeftUpChessBoardPanel
-  if (chess_game_.MoveChess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
+  if (chess_game_.IsMoveChessSuccess(event.GetLogicalPosition(chess_board_panel_dc_), kChessOuterRadius_) == true) {
     
   }
 
