@@ -75,15 +75,13 @@ void ChessGame::PlaceChesses()
 {
   time_t seed = time(nullptr);
 
-  Chess *chess_ptr = nullptr;
-  for (size_t chess_index = 0; chess_index < chesses_.size(); ++chess_index) {
-    chess_ptr = &(chesses_[chess_index]);
+  for (auto &chess : chesses_) {
     int row = 0;
     int column = 0;
     GetRandomPosition(row, column, seed);
-    chess_board_.SetChessOnGrid(chess_ptr, row, column);
-    chess_ptr->set_position(*(chess_board_.GetGridCenterPosition(row, column)));
-    chess_ptr->set_chessboard_grid(chess_board_.get_chessboard_grid(row, column));
+    chess_board_.SetChessOnGrid(&chess, row, column);
+    chess.set_position(*(chess_board_.GetGridCenterPosition(row, column)));
+    chess.set_chessboard_grid(chess_board_.get_chessboard_grid(row, column));
   }
 }
 
@@ -170,8 +168,8 @@ void ChessGame::Reset()
 
 void ChessGame::ResetChesses(void)
 {
-  for (size_t chess_index = 0; chess_index < chesses_.size(); ++chess_index) {
-    chesses_[chess_index].ResetChess();
+  for (auto &chess : chesses_) {
+    chess.ResetChess();
   }
 }
 
@@ -267,11 +265,11 @@ Chess * ChessGame::GetHitChess(const wxPoint &hit_point, const int &chess_outer_
 {
   wxPoint position_diff;
   const int chess_outer_radius_square = chess_outer_radius * chess_outer_radius;
-  for (std::vector<Chess>::iterator itor = chesses_.begin(); itor != chesses_.end(); ++itor) {
-    position_diff = hit_point - itor->get_position();
+  for (auto &chess : chesses_) {
+    position_diff = hit_point - chess.get_position();
     if ((position_diff.x * position_diff.x + position_diff.y * position_diff.y)
         <= chess_outer_radius_square) {
-      return itor._Ptr;
+      return &chess;
     }
   }
 
