@@ -89,8 +89,8 @@ protected:
 
   static const wxBrush        kChessBoardBackgroundBrush_;
   static const wxColour       kChessBoardTextForegroundColour_;
-  static const wxString       kLeftChessBoardString_; // wxT("觀棋不語真君子");
-  static const wxString       kRightChessBoardString_; //  wxT("觀棋不語真君子");
+  static const wxString       kLeftChessBoardString_; // wxS("觀棋不語真君子");
+  static const wxString       kRightChessBoardString_; //  wxS("觀棋不語真君子");
   static const wxFont         kLeftRightChessBoardTextFont_;
 
   // for drawing chess settings
@@ -112,8 +112,6 @@ protected:
   static const int            kChessTextYCoordinateOffset_;
 
   ChessGame chess_game_;
-
-  wxClientDC chess_board_panel_dc_;
 };
 
 }
