@@ -116,7 +116,7 @@ void ChessBattleMainFrame::OnLeftUpChessBoardPanel(wxMouseEvent& event)
   // TODO: Implement OnLeftUpChessBoardPanel
   wxClientDC client_dc(chess_board_panel_);
   if (chess_game_.IsMoveChessSuccess(event.GetLogicalPosition(client_dc), kChessOuterRadius_) == true) {
-    
+    // turn to another player
   }
 
   PaintNow();
@@ -136,7 +136,6 @@ void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
   // TODO: Implement OnPaintChessBoardPanel
   wxBufferedPaintDC dc(chess_board_panel_);
   Render(dc);
-  //PaintNow();
 }
 
 void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
@@ -189,14 +188,10 @@ void ChessBattleMainFrame::OnTextEnterChatInputTextCtrl(wxCommandEvent& event)
 
 void ChessBattleMainFrame::Render(wxDC &dc)
 {
-  wxBrush old_brush = dc.GetBackground();
-
   DrawChessBoard(dc);
   if (chess_game_.get_game_status() != kChessGameNotStart) {
     DrawAllChesses(dc);
   }
-
-  dc.SetBackground(old_brush);
 }
 
 void ChessBattleMainFrame::DrawChessBoard(wxDC &dc)
