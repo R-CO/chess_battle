@@ -116,9 +116,8 @@ void ChessBattleMainFrame::OnLeftUpChessBoardPanel(wxMouseEvent& event)
   // TODO: Implement OnLeftUpChessBoardPanel
   wxClientDC client_dc(chess_board_panel_);
   if (chess_game_.IsMoveChessSuccess(event.GetLogicalPosition(client_dc), kChessOuterRadius_) == true) {
-    // turn to another player
+    
   }
-
   PaintNow();
 }
 

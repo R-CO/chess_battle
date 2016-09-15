@@ -64,9 +64,12 @@ ChessGame::ChessGame(const wxPoint &left_top_grid_center_pos, const int &grid_wi
   left_top_grid_center_pos_ = left_top_grid_center_pos;
   grid_width_ = grid_width;
 
+  is_first_action_ = true;
   game_status_ = kChessGameNotStart;
   game_style_ = kChessGameStyleTraditional;
   game_mode_ = kChessGameModeOnePc;
+
+  current_player_ = 0;
 
   chess_be_taken_ = nullptr;
 }
@@ -105,6 +108,7 @@ bool ChessGame::IsMoveChessSuccess(const wxPoint & mouse_position, const int & c
       MoveChess(target_chessboard_grid);
       chess_be_taken_->set_taking(false);
       chess_be_taken_ = nullptr;
+      TurnToAnotherPlayer();
       return true;
     } else {
       chess_be_taken_->set_position(*(chess_be_taken_->get_chessboard_grid()->GetGridCenterPosition()));
@@ -127,8 +131,8 @@ bool ChessGame::IsOpenChessSuccess(const wxPoint & mouse_click_point, const int 
 
   if (chess->get_chess_status() == kChessIsNegative) {
     chess->set_chess_status(kChessIsPositive);
-    if (game_status_ == kChessGameNotStart) {
-      game_status_ = kChessGameStart;
+    if (is_first_action_ == true) {
+      is_first_action_ = false;
       if (chess->get_chess_color() == kBlackChess) {
         player_[0].color_ = kBlackChess;
         player_[1].color_ = kRedChess;
@@ -137,6 +141,7 @@ bool ChessGame::IsOpenChessSuccess(const wxPoint & mouse_click_point, const int 
         player_[1].color_ = kBlackChess;
       }
     }
+    TurnToAnotherPlayer();
     return true;
   }
 
@@ -147,21 +152,32 @@ bool ChessGame::IsTakeChessSuccess(const wxPoint & mouse_click_point, const int 
 {
   chess_be_taken_ = GetHitChess(mouse_click_point, chess_outer_radius);
   
-  if (chess_be_taken_ != nullptr ) {
-    if (chess_be_taken_->get_chess_status() != kChessIsPositive) {
-      chess_be_taken_ = nullptr;
-    } else {
-      chess_be_taken_->set_position(mouse_click_point);
-      chess_be_taken_->set_taking(true);
-      return true;
-    }
+  // did not hit any chess on the chessboard
+  if (chess_be_taken_ == nullptr) {
+    return false;
   }
 
-  return false;
+  // the chess is not positive
+  if (chess_be_taken_->get_chess_status() != kChessIsPositive) {
+    chess_be_taken_ = nullptr;
+    return false;
+  }
+
+  // the chess is not belongs to the current player
+  if (chess_be_taken_->get_chess_color() != player_[current_player_].color_) {
+    chess_be_taken_ = nullptr;
+    return false;
+  }
+
+  chess_be_taken_->set_position(mouse_click_point);
+  chess_be_taken_->set_taking(true);
+  return true;
 }
 
 void ChessGame::Reset()
 {
+  current_player_ = 0;
+  is_first_action_ = true;
   ResetChesses();
   ResetChessboardGrids();
 }
@@ -296,6 +312,12 @@ void ChessGame::MoveChess(ChessboardGrid * target_chessboard_grid)
   target_chessboard_grid->SetChess(chess_be_taken_);
 }
 
+void ChessGame::TurnToAnotherPlayer(void)
+{
+  ++current_player_;
+  current_player_ %= 2; // there are always only 2 players!
+}
+
 Chess * ChessGame::get_chess(const int &chess_number)
 {
   return get_chess(static_cast<const size_t>(chess_number));
@@ -353,8 +375,8 @@ inline ChessboardGrid * ChessGame::GetHitChessBoardGrid(const wxPoint & hit_poin
 
 const int ChessGame::GetMoveDistance(Chess * chess_be_moved, ChessboardGrid * target_chessboard_grid)
 {
-  return abs(chess_be_taken_->get_chessboard_grid()->get_row() - target_chessboard_grid->get_row()) +
-         abs(chess_be_taken_->get_chessboard_grid()->get_column() - target_chessboard_grid->get_column());
+  return abs(chess_be_moved->get_chessboard_grid()->get_row() - target_chessboard_grid->get_row()) +
+         abs(chess_be_moved->get_chessboard_grid()->get_column() - target_chessboard_grid->get_column());
 }
 
-}
+} // end of namespace "rco"

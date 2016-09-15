@@ -130,6 +130,8 @@ namespace rco {
     bool IsLegalChessMovement(Chess *chess_be_moved, ChessboardGrid *target_chessboard_grid);
     void MoveChess(ChessboardGrid *target_chessboard_grid);
 
+    void TurnToAnotherPlayer(void);
+
     Chessboard chess_board_;
     std::vector<Chess> chesses_;
     Player player_[2];
@@ -142,6 +144,7 @@ namespace rco {
     wxPoint left_top_grid_center_pos_;
     int grid_width_;
 
+    bool is_first_action_;
     ChessGameStatus game_status_;
     ChessGameStyle game_style_;
     ChessGameMode game_mode_;
