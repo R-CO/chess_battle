@@ -107,6 +107,7 @@ void ChessBattleMainFrame::OnLeftDownChessBoardPanel(wxMouseEvent& event)
   // TODO: Implement OnLeftDownChessBoardPanel
   wxClientDC client_dc(chess_board_panel_);
   if (chess_game_.IsTakeChessSuccess(event.GetLogicalPosition(client_dc), kChessOuterRadius_) == true) {
+    this->SetCursor(wxCURSOR_HAND);
     PaintNow();
   }
 }
@@ -118,6 +119,7 @@ void ChessBattleMainFrame::OnLeftUpChessBoardPanel(wxMouseEvent& event)
   if (chess_game_.IsMoveChessSuccess(event.GetLogicalPosition(client_dc), kChessOuterRadius_) == true) {
     
   }
+  this->SetCursor(wxCURSOR_DEFAULT);
   PaintNow();
 }
 
@@ -200,7 +202,7 @@ void ChessBattleMainFrame::DrawChessBoard(wxDC &dc)
 
   DrawLines(dc);
   DrawText(dc);
-  //DrawGameState(dc);
+  DrawGameState(dc);
 }
 
 void ChessBattleMainFrame::DrawLines(wxDC & dc)
@@ -259,6 +261,20 @@ void ChessBattleMainFrame::DrawText(wxDC & dc)
 
   dc.SetFont(old_font);
   dc.SetTextForeground(old_text_foreground);
+}
+
+void ChessBattleMainFrame::DrawGameState(wxDC & dc)
+{
+  static wxString first_player_string;
+  static const wxPoint first_player_string_pos(415, 40);
+  static wxString current_player_string;
+  static const wxPoint current_player_string_pos(495, 40);
+
+  first_player_string = wxString::Format(wxT("先手：%s"), chess_game_.GetFirstPlayerColorString());
+  current_player_string = wxString::Format(wxT("現在：%s"), chess_game_.GetCurrentPlayerColorString());
+
+  dc.DrawText(first_player_string, first_player_string_pos);
+  dc.DrawText(current_player_string, current_player_string_pos);
 }
 
 void ChessBattleMainFrame::DrawDetail(wxDC & dc, const wxPoint & center, const bool & fixed)

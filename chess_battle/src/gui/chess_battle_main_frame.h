@@ -76,6 +76,7 @@ protected:
   virtual void DrawChessBoard(wxDC &dc);
   virtual void DrawLines(wxDC &dc);
   virtual void DrawText(wxDC &dc);
+  virtual void DrawGameState(wxDC &dc);
   virtual void DrawDetail(wxDC &dc, const wxPoint &center, const bool &fixed);
   virtual void DrawChess(wxDC &dc, const Chess &chess);
   virtual void DrawChess(wxDC &dc, const Chess *chess);

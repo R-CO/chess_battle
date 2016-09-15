@@ -332,6 +332,36 @@ Chess * ChessGame::get_chess(const size_t & chess_number)
   }
 }
 
+wxString ChessGame::GetFirstPlayerColorString(void)
+{
+  if (is_first_action_ == false) {
+    if (player_[0].color_ == kBlackChess) {
+      static const wxString black_chess_string = wxT("黑棋");
+      return black_chess_string;
+    } else {
+      static const wxString red_chess_string = wxT("紅棋");
+      return red_chess_string;
+    }
+  }
+
+  return wxEmptyString;
+}
+
+wxString ChessGame::GetCurrentPlayerColorString(void)
+{
+  if (is_first_action_ == false) {
+    if (player_[current_player_].color_ == kBlackChess) {
+      static const wxString black_chess_string = wxT("黑棋");
+      return black_chess_string;
+    } else {
+      static const wxString red_chess_string = wxT("紅棋");
+      return red_chess_string;
+    }
+  }
+
+  return wxEmptyString;
+}
+
 bool ChessGame::SetChessPosition(const wxPoint & mouse_position)
 {
   if (chess_be_taken_ != nullptr) {

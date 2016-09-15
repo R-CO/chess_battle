@@ -100,6 +100,10 @@ namespace rco {
       return game_status_;
     }
 
+    wxString GetFirstPlayerColorString(void);
+
+    wxString GetCurrentPlayerColorString(void);
+
     // set function
 
     inline void set_game_status(const ChessGameStatus &game_status) {
