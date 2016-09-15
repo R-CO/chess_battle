@@ -115,6 +115,6 @@ protected:
   ChessGame chess_game_;
 };
 
-}
+} // end of namespace "rco"
 
 #endif // __chess_battle_main_frame__

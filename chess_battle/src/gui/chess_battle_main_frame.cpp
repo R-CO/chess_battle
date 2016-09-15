@@ -422,4 +422,4 @@ void ChessBattleMainFrame::InitGui(void)
   local_ip_static_text_->SetLabel(_T("local IP: ") + ipAddr);
 }
 
-}
+} // end of namespace "rco"

@@ -92,4 +92,4 @@ void Chess::InitChess(void)
   taking_ = false;
 }
 
-}
+} // end of namespace "rco"

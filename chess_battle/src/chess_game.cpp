@@ -103,7 +103,7 @@ bool ChessGame::IsMoveChessSuccess(const wxPoint & mouse_position, const int & c
       return false;
     }
 
-    
+
     if (IsLegalChessMovement(chess_be_taken_, target_chessboard_grid) == true) {
       MoveChess(target_chessboard_grid);
       chess_be_taken_->set_taking(false);
@@ -151,7 +151,7 @@ bool ChessGame::IsOpenChessSuccess(const wxPoint & mouse_click_point, const int 
 bool ChessGame::IsTakeChessSuccess(const wxPoint & mouse_click_point, const int & chess_outer_radius)
 {
   chess_be_taken_ = GetHitChess(mouse_click_point, chess_outer_radius);
-  
+
   // did not hit any chess on the chessboard
   if (chess_be_taken_ == nullptr) {
     return false;
@@ -206,98 +206,148 @@ bool ChessGame::IsLegalChessMovement(Chess * chess_be_moved, ChessboardGrid * ta
 
   if ((target_chessboard_grid->is_chess_on() == false) && (move_distance == 1)) {
     return kLegalMovement;
-  } else if ((target_chessboard_grid->is_chess_on() == true) &&
-             (target_chessboard_grid->get_chess()->get_chess_status() == kChessIsPositive)) {
-    if (chess_be_moved->get_chess_color() == chess_on_target_grid->get_chess_color()) {
+  }
+
+  if ((target_chessboard_grid->is_chess_on() == true)) {
+    if (target_chessboard_grid->get_chess()->get_chess_status() == kChessIsNegative) {
       return kIllegalMovement;
-    }
+    } else if (target_chessboard_grid->get_chess()->get_chess_status() == kChessIsPositive) {
+      if (chess_be_moved->get_chess_color() == chess_on_target_grid->get_chess_color()) {
+        return kIllegalMovement;
+      }
 
-    if ((chess_be_moved->get_chess_type() >= chess_on_target_grid->get_chess_type()) &&
-        (chess_be_moved->get_chess_type() != kChessCannon) &&
-        (move_distance == 1) &&
-        ((chess_be_moved->get_chess_type() - chess_on_target_grid->get_chess_type()) != 6)) {
-      chess_on_target_grid->set_chess_status(kChessIsDead);
-      chess_on_target_grid->set_chessboard_grid(nullptr);
-      chess_on_target_grid->set_position(wxPoint(400, 200)); // TODO: dead chess position
-      return kLegalMovement;
-    } else if ((chess_be_moved->get_chess_type() == kChessSoldier) &&
-               (chess_on_target_grid->get_chess_type() == kChessGeneral) &&
-               (move_distance == 1)) {
-      chess_on_target_grid->set_chess_status(kChessIsDead);
-      chess_on_target_grid->set_chessboard_grid(nullptr);
-      chess_on_target_grid->set_position(wxPoint(400, 200));
-      return kLegalMovement;
-    } else if (chess_be_moved->get_chess_type() == kChessCannon) {
-      // check whether the two chesses are on the same row/column
-      if (chess_be_moved->get_chessboard_grid()->get_row() == chess_on_target_grid->get_chessboard_grid()->get_row()) {
-        // count how many chesses there are on the same row between the two chesses
-        int row = chess_be_moved->get_chessboard_grid()->get_row();
-        int count_chesses_on_same_row = 0;
-        
-        if (chess_be_moved->get_chessboard_grid()->get_column() < chess_on_target_grid->get_chessboard_grid()->get_column()) {
-          for (int column_index = chess_be_moved->get_chessboard_grid()->get_column() + 1;
-               (column_index < kChessboardColumn) && (column_index < chess_on_target_grid->get_chessboard_grid()->get_column());
-               ++column_index) {
-            if (chess_board_.is_chess_on_grid(row, column_index) == true) {
-              ++count_chesses_on_same_row;
-            }
-          }
-        } else {
-          for (int column_index = chess_on_target_grid->get_chessboard_grid()->get_column() + 1;
-            (column_index < kChessboardColumn) && (column_index < chess_be_moved->get_chessboard_grid()->get_column());
-               ++column_index) {
-            if (chess_board_.is_chess_on_grid(row, column_index) == true) {
-              ++count_chesses_on_same_row;
-            }
-          }
-        }
+      bool is_legal_eat = false;
+      switch (chess_be_moved->get_chess_type()) {
+      case kChessSoldier:
+        is_legal_eat = IsLegalSoilderEat(chess_be_moved, chess_on_target_grid, move_distance);
+        break;
 
-        if (count_chesses_on_same_row == 1) {
-          chess_on_target_grid->set_chess_status(kChessIsDead);
-          chess_on_target_grid->set_chessboard_grid(nullptr);
-          chess_on_target_grid->set_position(wxPoint(400, 200));
-          return kLegalMovement;
-        } else {
-          return kIllegalMovement;
-        }
-      } else if (chess_be_moved->get_chessboard_grid()->get_column() == chess_on_target_grid->get_chessboard_grid()->get_column()) {
-        // count how many chesses there are on the same column between the two chesses
-        int column = chess_be_moved->get_chessboard_grid()->get_column();
-        int count_chesses_on_same_column = 0;
+      case kChessCannon:
+        is_legal_eat = IsLegalCannonEat(chess_be_moved, chess_on_target_grid);
+        break;
 
-        if (chess_be_moved->get_chessboard_grid()->get_row() < chess_on_target_grid->get_chessboard_grid()->get_row()) {
-          for (int row_index = chess_be_moved->get_chessboard_grid()->get_row() + 1;
-            (row_index < kChessboardRow) && (row_index < chess_on_target_grid->get_chessboard_grid()->get_row());
-               ++row_index) {
-            if (chess_board_.is_chess_on_grid(row_index, column) == true) {
-              ++count_chesses_on_same_column;
-            }
-          }
-        } else {
-          for (int row_index = chess_on_target_grid->get_chessboard_grid()->get_row() + 1;
-            (row_index < kChessboardRow) && (row_index < chess_be_moved->get_chessboard_grid()->get_row());
-               ++row_index) {
-            if (chess_board_.is_chess_on_grid(row_index, column) == true) {
-              ++count_chesses_on_same_column;
-            }
-          }
-        }
+      case kChessHorse:
+      case kChessCar:
+      case kChessElephant:
+      case kChessWarrior:
+        is_legal_eat = IsLegalNormalEat(chess_be_moved, chess_on_target_grid, move_distance);
+        break;
 
-        if (count_chesses_on_same_column == 1) {
-          chess_on_target_grid->set_chess_status(kChessIsDead);
-          chess_on_target_grid->set_chessboard_grid(nullptr);
-          chess_on_target_grid->set_position(wxPoint(400, 200));
-          return kLegalMovement;
-        } else {
-          return kIllegalMovement;
-        }
-      } else { // two chesses are not on the same row/colum
+      case kChessGeneral:
+        is_legal_eat = IsLegalGeneralEat(chess_be_moved, chess_on_target_grid, move_distance);
+        break;
+
+      default:
+        // something wrong
+        break;
+      }
+
+      if (is_legal_eat == true) {
+        chess_on_target_grid->set_chess_status(kChessIsDead);
+        chess_on_target_grid->set_chessboard_grid(nullptr);
+        chess_on_target_grid->set_position(wxPoint(400, 200)); // TODO: dead chess position
+        return kLegalMovement;
+      }
+      else {
         return kIllegalMovement;
       }
     }
   }
 
   return kIllegalMovement;
+}
+
+bool ChessGame::IsLegalGeneralEat(Chess * chess_be_moved, Chess * chess_on_target_grid, const int move_distance)
+{
+  if ((chess_be_moved->get_chess_type() >= chess_on_target_grid->get_chess_type()) &&
+    (move_distance == 1) &&
+      ((chess_be_moved->get_chess_type() - chess_on_target_grid->get_chess_type()) != 6)) {
+    return true;
+  }
+  return false;
+}
+
+bool ChessGame::IsLegalNormalEat(Chess * chess_be_moved, Chess * chess_on_target_grid, const int move_distance)
+{
+  if ((chess_be_moved->get_chess_type() >= chess_on_target_grid->get_chess_type()) &&
+    (move_distance == 1)) {
+    return true;
+  }
+  return false;
+}
+
+bool ChessGame::IsLegalCannonEat(Chess * chess_be_moved, Chess * chess_on_target_grid)
+{
+  // check whether the two chesses are on the same row/column
+  if (chess_be_moved->get_chessboard_grid()->get_row() == chess_on_target_grid->get_chessboard_grid()->get_row()) {
+    // count how many chesses there are on the same row between the two chesses
+    int row = chess_be_moved->get_chessboard_grid()->get_row();
+    int count_chesses_on_same_row = 0;
+
+    if (chess_be_moved->get_chessboard_grid()->get_column() < chess_on_target_grid->get_chessboard_grid()->get_column()) {
+      for (int column_index = chess_be_moved->get_chessboard_grid()->get_column() + 1;
+        (column_index < kChessboardColumn) && (column_index < chess_on_target_grid->get_chessboard_grid()->get_column());
+           ++column_index) {
+        if (chess_board_.is_chess_on_grid(row, column_index) == true) {
+          ++count_chesses_on_same_row;
+        }
+      }
+    } else {
+      for (int column_index = chess_on_target_grid->get_chessboard_grid()->get_column() + 1;
+        (column_index < kChessboardColumn) && (column_index < chess_be_moved->get_chessboard_grid()->get_column());
+           ++column_index) {
+        if (chess_board_.is_chess_on_grid(row, column_index) == true) {
+          ++count_chesses_on_same_row;
+        }
+      }
+    }
+
+    if (count_chesses_on_same_row == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (chess_be_moved->get_chessboard_grid()->get_column() == chess_on_target_grid->get_chessboard_grid()->get_column()) {
+    // count how many chesses there are on the same column between the two chesses
+    int column = chess_be_moved->get_chessboard_grid()->get_column();
+    int count_chesses_on_same_column = 0;
+
+    if (chess_be_moved->get_chessboard_grid()->get_row() < chess_on_target_grid->get_chessboard_grid()->get_row()) {
+      for (int row_index = chess_be_moved->get_chessboard_grid()->get_row() + 1;
+        (row_index < kChessboardRow) && (row_index < chess_on_target_grid->get_chessboard_grid()->get_row());
+           ++row_index) {
+        if (chess_board_.is_chess_on_grid(row_index, column) == true) {
+          ++count_chesses_on_same_column;
+        }
+      }
+    } else {
+      for (int row_index = chess_on_target_grid->get_chessboard_grid()->get_row() + 1;
+        (row_index < kChessboardRow) && (row_index < chess_be_moved->get_chessboard_grid()->get_row());
+           ++row_index) {
+        if (chess_board_.is_chess_on_grid(row_index, column) == true) {
+          ++count_chesses_on_same_column;
+        }
+      }
+    }
+
+    if (count_chesses_on_same_column == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }  
+  // two chesses are not on the same row/colum
+  return false;
+}
+
+bool ChessGame::IsLegalSoilderEat(Chess * chess_be_moved, Chess * chess_on_target_grid, const int move_distance)
+{
+  if (((chess_on_target_grid->get_chess_type() == kChessSoldier) ||
+       (chess_on_target_grid->get_chess_type() == kChessGeneral)) &&
+      (move_distance == 1)) {
+    return true;
+  }
+  return false;
 }
 
 void ChessGame::MoveChess(ChessboardGrid * target_chessboard_grid)
@@ -315,7 +365,7 @@ void ChessGame::MoveChess(ChessboardGrid * target_chessboard_grid)
 void ChessGame::TurnToAnotherPlayer(void)
 {
   ++current_player_;
-  current_player_ %= 2; // there are always only 2 players!
+  current_player_ &= 0x1; // there are always only 2 players!
 }
 
 Chess * ChessGame::get_chess(const int &chess_number)

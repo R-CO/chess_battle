@@ -111,4 +111,4 @@ void ChessboardGrid::SetChess(Chess * chess)
   }
 }
 
-}
+} // end of namespace "rco"

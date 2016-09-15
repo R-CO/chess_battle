@@ -169,8 +169,8 @@ protected:
 
   static std::map<wxString, ChessColor> kChessNameColorMap;
   static std::map<wxString, ChessType> kChessNameTypeMap;
-};
+}; // end of class "Chess"
 
-}
+} // end of namespace "rco"
 
-#endif
+#endif // end of define "CHESS_BATTLE_CHESS_H"
