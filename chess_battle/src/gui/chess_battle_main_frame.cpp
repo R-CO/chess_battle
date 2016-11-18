@@ -87,7 +87,7 @@ void ChessBattleMainFrame::PaintNow(void)
   Render(buffered_dc);
 }
 
-void ChessBattleMainFrame::OnCloseMainFrameBase(wxCloseEvent& event)
+void ChessBattleMainFrame::OnCloseMainFrameBase(wxCloseEvent& WXUNUSED(event))
 {
   // TODO: Implement OnCloseMainFrameBase
   Destroy();
@@ -132,14 +132,14 @@ void ChessBattleMainFrame::OnMotionChessBoardPanel(wxMouseEvent& event)
   }
 }
 
-void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& event)
+void ChessBattleMainFrame::OnPaintChessBoardPanel(wxPaintEvent& WXUNUSED(event))
 {
   // TODO: Implement OnPaintChessBoardPanel
   wxBufferedPaintDC dc(chess_board_panel_);
   Render(dc);
 }
 
-void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& event)
+void ChessBattleMainFrame::OnButtonClickNewGame(wxCommandEvent& WXUNUSED(event))
 {
   // TODO: Implement OnButtonClickNewGame
   chess_game_.set_game_status(kChessGameStart);
